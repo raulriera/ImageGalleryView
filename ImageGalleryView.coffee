@@ -82,7 +82,7 @@ ImageGalleryView = (images, headerView, footerView) ->
 		
 		imageWindow
 	
-	createThumbnail = (image) ->
+	createThumbnail = (image, index) ->
 		view = Ti.UI.createImageView
 			image: image.small
 			width: '70dp'
@@ -90,20 +90,21 @@ ImageGalleryView = (images, headerView, footerView) ->
 			top: '8dp'
 			left: '8dp'
 			id: image.id
+			index: index
 	
 	onThumbnailTouched = (e) ->
 		if e.source.id?
 			self.fireEvent "thumbnailTouched", { image: e.source }
-			window = createGalleryWindow()
+			window = createGalleryWindow e.source.index
 			window.open()
 
 	self.addEventListener "click", onThumbnailTouched
 	
 	if headerView
 		self.add headerView
-		
-	for image in images
-		self.add createThumbnail image
+	
+	for image,index in images
+		self.add createThumbnail image, index
 	
 	if footerView
 		self.add footerView

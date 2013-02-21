@@ -13,7 +13,7 @@
   var ImageGalleryView;
 
   ImageGalleryView = function(images, headerView, footerView) {
-    var createGalleryWindow, createThumbnail, image, isAndroid, onThumbnailTouched, self, _i, _len;
+    var createGalleryWindow, createThumbnail, image, index, isAndroid, onThumbnailTouched, self, _i, _len;
     isAndroid = Titanium.Platform.osname === "android";
     self = Ti.UI.createScrollView({
       top: 0,
@@ -87,7 +87,7 @@
       imageWindow.add(closeButton);
       return imageWindow;
     };
-    createThumbnail = function(image) {
+    createThumbnail = function(image, index) {
       var view;
       return view = Ti.UI.createImageView({
         image: image.small,
@@ -95,7 +95,8 @@
         height: '70dp',
         top: '8dp',
         left: '8dp',
-        id: image.id
+        id: image.id,
+        index: index
       });
     };
     onThumbnailTouched = function(e) {
@@ -104,7 +105,7 @@
         self.fireEvent("thumbnailTouched", {
           image: e.source
         });
-        window = createGalleryWindow();
+        window = createGalleryWindow(e.source.index);
         return window.open();
       }
     };
@@ -112,9 +113,9 @@
     if (headerView) {
       self.add(headerView);
     }
-    for (_i = 0, _len = images.length; _i < _len; _i++) {
-      image = images[_i];
-      self.add(createThumbnail(image));
+    for (index = _i = 0, _len = images.length; _i < _len; index = ++_i) {
+      image = images[index];
+      self.add(createThumbnail(image, index));
     }
     if (footerView) {
       self.add(footerView);
