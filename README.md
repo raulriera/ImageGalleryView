@@ -1,7 +1,7 @@
 #ImageGalleryView:
 **ImageGalleryView** is multi platform (iOS and Android) view to display images very similar to the `Photos.app` on the iPhone. 
 
-![Listing](https://github.com/raulriera/ImageGalleryView/blob/master/examples/List.png) ![Detail](https://github.com/raulriera/ImageGalleryView/blob/master/examples/Detail.png)
+![Listing](https://github.com/raulriera/ImageGalleryView/raw/master/examples/Detail.png) ![Detail](https://github.com/raulriera/ImageGalleryView/raw/master/examples/Detail.png)
 
 ##Usage:
 In your app.coffee (or elsewhere), call:
