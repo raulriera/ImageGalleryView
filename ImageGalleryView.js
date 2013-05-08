@@ -60,7 +60,7 @@
         orientationModes: [Ti.UI.LANDSCAPE_LEFT, Ti.UI.LANDSCAPE_RIGHT, Ti.UI.PORTRAIT]
       });
       closeButton = Titanium.UI.createButton({
-        backgroundColor: "#55000000",
+        backgroundColor: '#55000000',
         backgroundImage: null,
         borderColor: '#fff',
         borderRadius: 4,
@@ -71,7 +71,7 @@
           fontSize: '11dp'
         },
         color: '#fff',
-        title: L("gallery_close"),
+        title: 'Close',
         top: '10dp',
         left: '10dp'
       });
