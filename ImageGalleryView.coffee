@@ -1,11 +1,16 @@
 ###
 	ImageGalleryView, it will accept an array of 'image' objects,
 	composed of 'id,small,large'. Optionally you can also pass a 
-	headerView and a footerView pretty much like a TableView
+	headerView and a pageSize (for paginated galleries)
+	
+	@params
+	@images: array of image objects with the properties "id, small, large"
+	@headerView: a view to place on before the actual thumbnails
+	@pageSize: specify a value greater than 0 in order to paginate the gallery
 	
 	Created by @raulriera but heavily inspired by https://github.com/codeboxed/Titanium-Image-Gallery
 ###
-ImageGalleryView = (images, headerView, footerView) ->
+ImageGalleryView = (images, headerView, pageSize = 0) ->
 	
 	isAndroid = Titanium.Platform.osname is "android"
 	
@@ -18,6 +23,26 @@ ImageGalleryView = (images, headerView, footerView) ->
 		contentWidth: Titanium.UI.FILL
 		contentHeight: "auto"
 		layout: "horizontal"
+		showVerticalScrollIndicator: true
+			
+	# removed the ability to specify a "footer" view" and changed it for a
+	# load more button if the pageSize is greater than 0	
+	if pageSize > 0
+		# these flags let's us control the pagination
+		currentPage = 1
+		
+		footerView = Titanium.UI.createView
+			height: 48
+	
+		loadMoreButton = Titanium.UI.createButton
+			title: "Load more"
+			height: 44
+			left: 10
+			right: 10
+			top: 10
+			bottom: 10
+		
+		footerView.add loadMoreButton
 	
 	createGalleryWindow = (currentPhoto = 0) ->
 		imageWindow = Titanium.UI.createWindow
@@ -55,7 +80,6 @@ ImageGalleryView = (images, headerView, footerView) ->
 		b = images.length
 	
 		while i < b
-			
 			image = Ti.UI.createImageView
 				backgroundColor: "#000"
 				image: images[i].large
@@ -97,17 +121,43 @@ ImageGalleryView = (images, headerView, footerView) ->
 			self.fireEvent "thumbnailTouched", { image: e.source }
 			window = createGalleryWindow e.source.index
 			window.open()
+	
+	addImagesToQueue = ->
+		# if the pageSize is 0, or the image count is lower than the pageSie
+		# then display all the images
+		if pageSize is 0 || images.length < pageSize 
+			for image in images
+				self.add createThumbnail image
+		# otherwise, start our pagination	
+		else			
+			if currentPage > 1
+				# remove the load more button
+				self.remove loadMoreButton
+			
+			# set the boundaries
+			startsAt = (currentPage-1) * pageSize
+			endsAt = currentPage * pageSize
+			
+			# divide the array into pieces
+			imagesPaginated = images.slice startsAt, endsAt
+			currentPage = currentPage + 1
+			
+			# fill the gallery
+			for image in imagesPaginated
+				self.add createThumbnail image
+				
+			# add the load more button
+			if (currentPage-1) < Math.ceil images.length / pageSize
+				self.add loadMoreButton	
 
 	self.addEventListener "click", onThumbnailTouched
+	loadMoreButton.addEventListener "click", addImagesToQueue
 	
 	if headerView
 		self.add headerView
 	
-	for image,index in images
-		self.add createThumbnail image, index
-	
-	if footerView
-		self.add footerView
+	# start adding the images
+	addImagesToQueue()
 	
 	self
 
