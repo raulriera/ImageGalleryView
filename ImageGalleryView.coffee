@@ -146,7 +146,8 @@ ImageGalleryView = (images, headerView, pageSize = 0) ->
 				self.add loadMoreButton	
 
 	self.addEventListener "click", onThumbnailTouched
-	loadMoreButton.addEventListener "click", addImagesToQueue
+	if pageSize > 0
+		loadMoreButton.addEventListener "click", addImagesToQueue
 	
 	if headerView
 		self.add headerView
