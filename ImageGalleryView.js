@@ -18,7 +18,7 @@
   var ImageGalleryView;
 
   ImageGalleryView = function(images, headerView, pageSize) {
-    var addImagesToQueue, createGalleryWindow, createThumbnail, currentPage, footerView, isAndroid, loadMoreButton, onThumbnailTouched, self;
+    var addImagesToQueue, createGalleryWindow, createThumbnail, currentPage, isAndroid, loadMoreButton, onThumbnailTouched, self;
     if (pageSize == null) {
       pageSize = 0;
     }
@@ -35,9 +35,6 @@
     });
     if (pageSize > 0) {
       currentPage = 1;
-      footerView = Titanium.UI.createView({
-        height: 48
-      });
       loadMoreButton = Titanium.UI.createButton({
         title: "Load more",
         height: 44,
@@ -46,7 +43,6 @@
         top: 10,
         bottom: 10
       });
-      footerView.add(loadMoreButton);
     }
     createGalleryWindow = function(currentPhoto) {
       var b, closeButton, i, image, imageWindow, photosView, scrollView, viewsArray;

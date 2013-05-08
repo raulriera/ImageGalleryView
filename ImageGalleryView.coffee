@@ -31,9 +31,6 @@ ImageGalleryView = (images, headerView, pageSize = 0) ->
 		# these flags let's us control the pagination
 		currentPage = 1
 		
-		footerView = Titanium.UI.createView
-			height: 48
-	
 		loadMoreButton = Titanium.UI.createButton
 			title: "Load more"
 			height: 44
@@ -41,8 +38,6 @@ ImageGalleryView = (images, headerView, pageSize = 0) ->
 			right: 10
 			top: 10
 			bottom: 10
-		
-		footerView.add loadMoreButton
 	
 	createGalleryWindow = (currentPhoto = 0) ->
 		imageWindow = Titanium.UI.createWindow
